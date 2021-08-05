@@ -1,37 +1,18 @@
 import "./App.css";
 import { Homepage } from "./pages/homepage/homepage.componnent";
 import { Route, Switch } from "react-router-dom";
-
-const HatsPage = (props) => {
-  return (
-    <div>
-      <button
-        onClick={() => {
-          props.history.push("/");
-        }}>
-        click me
-      </button>
-      <h1>this is hats</h1>
-    </div>
-  );
-};
-
-const Topicdetail = (props) => {
-  return (
-    <div>
-      {console.log(props)}
-      <h1>{props.match.params.detail}</h1>
-    </div>
-  );
-};
+import ShopPage from "./pages/shop/shop.component";
+import { SigInAndSignUp } from "./pages/sign-in-sign-up/sign-in-sign-up.component";
+import { Header } from "./components/header/header.component";
 
 function App() {
   return (
     <div>
+      <Header />
       <Switch>
         <Route exact path='/' component={Homepage} />
-        <Route exact path='/hats' component={HatsPage} />
-        <Route path='/hats/:detail' component={Topicdetail} />
+        <Route exact path='/shop' component={ShopPage} />
+        <Route exact path='/signin' component={SigInAndSignUp} />
       </Switch>
     </div>
   );
