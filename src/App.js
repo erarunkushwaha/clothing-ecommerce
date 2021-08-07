@@ -5,7 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import { SigInAndSignUp } from "./pages/sign-in-sign-up/sign-in-sign-up.component";
 import { Header } from "./components/header/header.component";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 class App extends Component {
   constructor() {
@@ -19,8 +19,20 @@ class App extends Component {
   unSuscribeFromAuth = null;
 
   componentDidMount() {
-    this.unSuscribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
+    this.unSuscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        userRef.onSnapshot((snapshot) => {
+          this.setState({
+            currentUser: {
+              id: snapshot.id,
+              ...snapshot.data(),
+            },
+          });
+          console.log(this.state);
+        });
+      }
+      this.setState({ currentUser: userAuth });
     });
   }
 
